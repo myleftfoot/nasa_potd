@@ -12,6 +12,15 @@ serde_derive = "*"
 serde_json = "*"
 toml = "*"
 ureq = "*"
+error-chain = "*"
+futures = { version = "*" }
+tokio = {version = "*", features = ["full"] }
+url = "*"
+exitcode = "*"
+notify-rust = "*"
+log = "*"
+env_logger = "*"
+ansi_term = "*"
 
 [[bin]]
 name="nasa_potd"
