@@ -21,6 +21,7 @@ notify-rust = "*"
 log = "*"
 env_logger = "*"
 ansi_term = "*"
+chrono = "*"
 
 [[bin]]
 name="nasa_potd"

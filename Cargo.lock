@@ -592,6 +592,7 @@ name = "nasa_potd"
 version = "0.1.0"
 dependencies = [
  "ansi_term",
+ "chrono",
  "env_logger",
  "error-chain",
  "exitcode",

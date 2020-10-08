@@ -3,6 +3,8 @@ use serde_json;
 use ureq;
 use ureq::Error;
 
+use chrono::prelude::*;
+
 const URL: &str = "https://api.nasa.gov/planetary/apod";
 
 #[derive(Deserialize)]
@@ -17,20 +19,24 @@ pub struct NasaResponse {
 pub struct Apod {
     pub api_key: String,
     pub nasa_url: String,
+    pub date: String
 }
 
 impl Apod {
     pub fn new(key: String) -> Apod {
+        let local: DateTime<Local> = Local::now();
         Apod {
             api_key: key,
             nasa_url: String::from(URL),
+            date: local.format("%Y-%m-%d").to_string()
         }
     }
 }
 
 impl Apod {
     pub fn retrieve_potd_info(&self) -> Result<NasaResponse, Error> {
-        let url = format!("{}?api_key={}", self.nasa_url, self.api_key);
+        
+        let url = format!("{}?api_key={}&date={}", self.nasa_url, self.api_key, self.date);
         let response = ureq::get(&url).call();
         if !response.ok() {
             return Err(Error::BadStatus);

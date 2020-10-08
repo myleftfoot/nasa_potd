@@ -1,6 +1,7 @@
 use error_chain::error_chain;
 use exitcode;
 use notify_rust::Notification;
+use std::env;
 mod apod;
 mod potd;
 use env_logger;
@@ -14,9 +15,13 @@ error_chain! {
 
 fn main() {
     env_logger::init();
-
-    let conf = potd::parse_config(String::from("/Users/strotti/.potd/nasa_potd.toml"));
+    let mut home_folder = env::current_dir().unwrap().to_path_buf();
+    home_folder.push(".potd");
+    home_folder.push("nasa_potd.toml");
+    
+    let conf = potd::parse_config(home_folder.display().to_string());
     let a = apod::Apod::new(conf.nasa.api_key);
+    
     let response = a.retrieve_potd_info();
     match response {
         Ok(r) => {
@@ -29,8 +34,9 @@ fn main() {
 
                 let _x = Notification::new()
                     .summary("Nasa Picture of the Day")
+                    .appname("nasa_potd")
                     .body(&r.title.unwrap_or(String::from("").to_string()))
-                    .icon("nasa")
+                    .icon("firefox")
                     .show();
             }
         }
